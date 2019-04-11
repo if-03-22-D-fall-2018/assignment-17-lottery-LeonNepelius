@@ -22,6 +22,7 @@
 
 static FILE* stream;
 static char separator;
+static int drawing_of_numbers[TIP_SIZE];
 
 bool init_lottery(const char *csv_file, char csv_separator)
 {
@@ -33,10 +34,10 @@ bool init_lottery(const char *csv_file, char csv_separator)
 
 bool get_tip(int tip_number, int tip[TIP_SIZE])
 {
-    if (tip_number < 0 || tip_number > 45) return false;
+    if (tip_number < 0 || tip_number >= 44) return false;
     int count = 0;
-    char line[100];
-    while ( fgets(line, 100, stream) != NULL) // read a line
+    char line[MAX_LINE_LEN];
+    while ( fgets(line, MAX_LINE_LEN, stream) != NULL) // read a line
     {
         if (count == tip_number)
         {
@@ -65,12 +66,26 @@ bool get_tip(int tip_number, int tip[TIP_SIZE])
 
 bool set_drawing(int drawing_numbers[TIP_SIZE])
 {
-  return false;
+  for (int i = 0; i < TIP_SIZE; i++) {
+    if (drawing_numbers[i] <= 0 || drawing_numbers[i] > 45) return false;
+    else drawing_of_numbers[i] = drawing_numbers[i];
+  }
+  return true;
 }
 
 int get_tip_result(int tip_number)
 {
-  return 0;
+  if (tip_number < 0 || tip_number >= 44) return -2;
+  if (!drawing_of_numbers[0])return -1;
+  int tip[TIP_SIZE];
+  int count = 0;
+  get_tip(tip_number,tip);
+  for (int i = 0; i < TIP_SIZE; i++) {
+    for (int j = 0; j < TIP_SIZE; j++) {
+      if (drawing_of_numbers[i] == tip[j]) count++;
+    }
+  }
+  return count;
 }
 
 int get_right_tips_count(int right_digits_count)
