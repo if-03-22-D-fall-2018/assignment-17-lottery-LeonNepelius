@@ -27,4 +27,6 @@ int get_tip_result(int tip_number);
 
 int get_right_tips_count(int right_digits_count);
 
+bool is_empty(int drawing_numbers[]);
+
 #endif
