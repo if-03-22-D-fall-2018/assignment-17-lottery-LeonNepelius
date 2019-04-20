@@ -53,7 +53,6 @@ bool get_tip(int tip_number, int tip[TIP_SIZE])
     {
         if (count == tip_number)
         {
-            if (line[strlen(line)-1] == '\n') line[strlen(line)-1] = '\0'; // need to remove \n (new line) to get the last number without \n
             count = 0;
             char str[2];
             str[0] = separator;
