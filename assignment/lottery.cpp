@@ -59,19 +59,20 @@ bool get_tip(int tip_number, int tip[TIP_SIZE])
             str[0] = separator;
             str[1] = '\0';
             char* ptr = strtok(line, str); // gets the first string before separator
-            while(ptr != NULL && count < TIP_SIZE)
+            while(ptr != 0)
             {
-                ptr = strtok(NULL, str); // gets next string
-                tip[count] = atoi(ptr); // converts the string to an int
+                ptr = strtok(0, str); // gets next string
+                if (ptr == 0) break; // if 0 we reached EOL
+                if (atoi(ptr) > 0 && atoi(ptr) <= 45) // check if it is a valid tip number
+                {
+                    tip[count] = atoi(ptr); // converts the string to an int
+                }
                 count++;
             }
             rewind(stream); // sets current to 0 to start at the beginning next time
             return true;
         }
-        else
-        {
-            count++;
-        }
+        count++;
     }
   return false;
 }
@@ -103,5 +104,14 @@ int get_tip_result(int tip_number)
 int get_right_tips_count(int right_digits_count)
 {
     if (right_digits_count < 0 || right_digits_count > TIP_SIZE || is_empty(drawing_of_numbers)) return -1;
-  return 0;
+    int count = 0;
+    int temp = 0;
+    for (int i = 0; i < 44; ++i) {
+        temp = get_tip_result(i);
+        if (temp == right_digits_count)
+        {
+            count++;
+        }
+    }
+  return count;
 }
